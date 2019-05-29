@@ -26,7 +26,7 @@ public final class DtoFactory {
     public static Role getRole() {
         Role role = new Role();
         role.setId(getId());
-        role.setName("RoleName");
+        role.setName("ROLE_RoleName");
         return role;
     }
 

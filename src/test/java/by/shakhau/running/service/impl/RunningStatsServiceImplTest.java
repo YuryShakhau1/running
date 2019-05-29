@@ -117,7 +117,7 @@ public class RunningStatsServiceImplTest {
     }
 
     @Test
-    public void delete() {
+    public void testDelete() {
         Stats stats = DtoFactory.getStats();
 
         runningStatsService.delete(stats.getId());
@@ -126,7 +126,7 @@ public class RunningStatsServiceImplTest {
     }
 
     @Test
-    public void averageStats() {
+    public void testAverageStats() {
         User user = DtoFactory.getUser();
         StatsEntity statsEntity1 = EntityFactory.getStats();
         StatsEntity statsEntity2 = EntityFactory.getStats();

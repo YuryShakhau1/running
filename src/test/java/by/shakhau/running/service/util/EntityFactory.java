@@ -3,9 +3,6 @@ package by.shakhau.running.service.util;
 import by.shakhau.running.persistence.entity.RoleEntity;
 import by.shakhau.running.persistence.entity.StatsEntity;
 import by.shakhau.running.persistence.entity.UserEntity;
-import by.shakhau.running.service.dto.Role;
-import by.shakhau.running.service.dto.Stats;
-import by.shakhau.running.service.dto.User;
 
 import java.util.Collections;
 import java.util.Date;

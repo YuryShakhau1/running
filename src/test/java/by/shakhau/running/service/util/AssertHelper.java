@@ -30,12 +30,25 @@ public final class AssertHelper {
         assertUsers(stats.getUser(), statsFound.getUser());
     }
 
+    public static void assertUsers(List<User> users, List<User> usersFound) {
+        assertThat(users.size()).isEqualTo(usersFound.size());
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            User userFound = usersFound.get(i);
+
+            assertUsers(user, userFound);
+        }
+    }
+
     public static void assertUsers(User user, User userFound) {
         assertThat(user.getId()).isEqualTo(userFound.getId());
         assertThat(user.getName()).isEqualTo(userFound.getName());
+        assertThat(user.getPassword()).isEqualTo(userFound.getPassword());
 
-        List<Role> roles = user.getRoles();
-        List<Role> rolesFound = userFound.getRoles();
+        assertRoles(user.getRoles(), userFound.getRoles());
+    }
+
+    public static void assertRoles(List<Role> roles, List<Role> rolesFound) {
         assertThat(roles.size()).isEqualTo(rolesFound.size());
         for (int i = 0; i < roles.size(); i++) {
             Role role = roles.get(i);
