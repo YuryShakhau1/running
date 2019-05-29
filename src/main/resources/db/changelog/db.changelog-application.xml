@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Shakhau" id="1">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="password" type="varchar(64)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="role">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="user_role">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_role"
+                                 constraintName="fk_user_role_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user" />
+
+        <addForeignKeyConstraint baseColumnNames="role_id"
+                                 baseTableName="user_role"
+                                 constraintName="fk_user_role_role_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="role" />
+
+        <createTable tableName="Stats">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="distance" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="time" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="Stats"
+                                 constraintName="fk_stats_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user" />
+
+        <addUniqueConstraint
+                columnNames="name"
+                constraintName="unique_user_name"
+                tableName="user"/>
+
+    </changeSet>
+
+    <changeSet author="Shakhau" id="2">
+        <insert tableName="user">
+            <column name="id" value="1"/>
+            <column name="name" value="John"/>
+            <column name="password" value="$2a$10$HiBzvNqbl.Ap4poThBHcEuTF/YBybBLzRZuvuFGLF0y.Svm1metPC"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="2"/>
+            <column name="name" value="Jack"/>
+            <column name="password" value="$2a$10$9tMaRGpKkH6AZ4CLz8nov.zkKmNvgtm7jUiydQwx03hpJaOXPfEXW"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="3"/>
+            <column name="name" value="Max"/>
+            <column name="password" value="$2a$10$klev7r24iePqkx29eO7ryOt.xdHL68WVTVOUo9iGc1xRQnu/fS0yC"/>
+        </insert>
+
+        <insert tableName="role">
+            <column name="id" value="1"/>
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" value="2"/>
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+
+        <insert tableName="user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="3"/>
+            <column name="role_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
