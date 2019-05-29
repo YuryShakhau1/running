@@ -1,6 +1,5 @@
 package by.shakhau.running.service.impl;
 
-import by.shakhau.running.persistence.entity.StatsEntity;
 import by.shakhau.running.persistence.repository.RunningStatsRepository;
 import by.shakhau.running.service.RunningStatsService;
 import by.shakhau.running.service.UserService;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 public class RunningStatsServiceImpl implements RunningStatsService {
 
     @Value("${date.format:yyyy-MM-dd}")
-    private String dateFromat;
+    private String dateFormat;
 
     @Autowired
     private RunningStatsRepository runningStatsRepository;
@@ -119,9 +118,9 @@ public class RunningStatsServiceImpl implements RunningStatsService {
                 .append("Weak ")
                 .append(weakNumber)
                 .append(": (")
-                .append(DateUtil.dateToString(firstDate, dateFromat))
+                .append(DateUtil.dateToString(firstDate, dateFormat))
                 .append(" / ")
-                .append(DateUtil.dateToString(lastDate, dateFromat))
+                .append(DateUtil.dateToString(lastDate, dateFormat))
                 .append(")").toString();
     }
 
