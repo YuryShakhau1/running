@@ -1,4 +1,4 @@
-package by.shakhau.running.service.impl;
+package by.shakhau.running.service.util;
 
 import by.shakhau.running.persistence.entity.RoleEntity;
 import by.shakhau.running.persistence.entity.StatsEntity;

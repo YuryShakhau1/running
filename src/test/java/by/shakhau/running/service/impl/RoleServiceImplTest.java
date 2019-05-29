@@ -4,16 +4,13 @@ import by.shakhau.running.persistence.entity.RoleEntity;
 import by.shakhau.running.persistence.repository.RoleRepository;
 import by.shakhau.running.service.dto.Role;
 import by.shakhau.running.service.mapper.RoleMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 public class RoleServiceImplTest {
