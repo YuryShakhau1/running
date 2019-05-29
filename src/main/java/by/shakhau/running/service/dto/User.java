@@ -2,11 +2,14 @@ package by.shakhau.running.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.List;
+
 public class User implements Dto {
 
     private Long id;
     private String name;
     private String password;
+    private List<Role> roles;
 
     public Long getId() {
         return id;
@@ -31,5 +34,13 @@ public class User implements Dto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

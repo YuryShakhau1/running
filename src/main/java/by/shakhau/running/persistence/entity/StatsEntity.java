@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @javax.persistence.Entity
-@Table(name = "Stats")
+@Table(name = "stats")
 public class StatsEntity implements Entity<Long> {
 
     @Id

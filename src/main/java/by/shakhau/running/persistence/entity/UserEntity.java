@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @javax.persistence.Entity
-@Table(name = "User")
+@Table(name = "user")
 public class UserEntity implements Entity<Long> {
 
     @Id
@@ -19,7 +19,7 @@ public class UserEntity implements Entity<Long> {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "UserRole",
+    @JoinTable(name = "user_role",
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<RoleEntity> roles;

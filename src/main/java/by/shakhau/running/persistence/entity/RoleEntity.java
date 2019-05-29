@@ -4,8 +4,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @javax.persistence.Entity
-@Table(name = "Role")
+@Table(name = "role")
 public class RoleEntity implements Entity<Long> {
+
+    public static final String ADMIN_ROLE = "ADMIN";
+    public static final String USER_ROLE = "USER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

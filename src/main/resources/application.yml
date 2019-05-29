@@ -1,8 +1,0 @@
-management:
-  security:
-    enabled: false
-
-spring:
-  resources:
-    chain:
-      enabled: false

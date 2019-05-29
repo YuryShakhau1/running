@@ -26,8 +26,8 @@ public class UserResource {
         return userService.findByName(userName) == null;
     }
 
-    @PostMapping(value = "/{userName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User createUser(@PathVariable String userName, @PathVariable String password) {
-        return userService.createUser(userName, password);
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user.getName(), user.getPassword());
     }
 }
