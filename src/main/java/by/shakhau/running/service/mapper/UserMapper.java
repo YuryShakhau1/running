@@ -16,6 +16,7 @@ public class UserMapper implements Mapper<UserEntity, User> {
         UserEntity entity = new UserEntity();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
+        entity.setPassword(dto.getPassword());
         return entity;
     }
 
@@ -28,6 +29,7 @@ public class UserMapper implements Mapper<UserEntity, User> {
         User dto = new User();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setPassword(entity.getPassword());
         return dto;
     }
 }

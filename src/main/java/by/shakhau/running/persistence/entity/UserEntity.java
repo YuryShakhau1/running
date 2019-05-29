@@ -1,6 +1,7 @@
 package by.shakhau.running.persistence.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = "User")
@@ -13,6 +14,15 @@ public class UserEntity implements Entity<Long> {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "UserRole",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<RoleEntity> roles;
 
     @Override
     public Long getId() {
@@ -29,5 +39,21 @@ public class UserEntity implements Entity<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
     }
 }

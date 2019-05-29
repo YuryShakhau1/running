@@ -5,6 +5,7 @@ public class JwtUser {
     private long id;
     private String userName;
     private String role;
+    private String password;
 
     public long getId() {
         return id;
@@ -28,5 +29,13 @@ public class JwtUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

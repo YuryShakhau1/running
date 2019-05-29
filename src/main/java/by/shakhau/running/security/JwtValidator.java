@@ -1,13 +1,17 @@
 package by.shakhau.running.security;
 
 import by.shakhau.running.security.model.JwtUser;
+import by.shakhau.running.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtValidator {
 
+    @Autowired
+    private UserService userService;
     private String secret = "running";
 
     public JwtUser validate(String token) {

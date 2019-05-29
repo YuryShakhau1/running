@@ -29,4 +29,26 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         return userMapper.toDto(userRepository.findById(id).orElse(null));
     }
+
+    @Override
+    public User findByName(String name) {
+        return userMapper.toDto(userRepository.findByName(name));
+    }
+
+    @Override
+    public User findByNameAndPassword(String name, String password) {
+        return userMapper.toDto(userRepository.findByNameAndPassword(name, password));
+    }
+
+    @Override
+    public User createUser(String name, String password) {
+        if (userRepository.findByName(name) != null) {
+            return null;
+        }
+
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(user)));
+    }
 }
