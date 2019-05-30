@@ -30,7 +30,7 @@ public class StatsResource {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization token",
                     required = true, dataType = "string", paramType = "header") })
-    public Stats findAll(@PathVariable Long id) {
+    public Stats findById(@PathVariable Long id) {
         return runningStatsService.findById(id);
     }
 
