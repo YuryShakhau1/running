@@ -1,5 +1,6 @@
 package by.shakhau.running.rest;
 
+import by.shakhau.running.SpringSecurityWebAuxTestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = SpringSecurityWebAuxTestConfig.class
+)
 @AutoConfigureMockMvc
 public class ResourceTest {
 
