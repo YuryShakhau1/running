@@ -10,4 +10,4 @@ All notable changes to this project.
 
 - Swagger ui
 - Service layer tests
-- Open end points tests
+- End points tests
