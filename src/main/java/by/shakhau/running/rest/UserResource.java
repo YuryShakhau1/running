@@ -33,7 +33,7 @@ public class UserResource {
         return userService.findByName(userName) == null;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody UserAuthenticationDto user) {
         return userService.createUser(user.getUserName(), user.getPassword());
     }
