@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(String name, String password) {
         if (userRepository.findByName(name) != null) {
-            return null;
+            throw new IllegalArgumentException("User with name " + name + " already exists");
         }
 
         Role userRole = roleService.findByName(ROLE_USER);
