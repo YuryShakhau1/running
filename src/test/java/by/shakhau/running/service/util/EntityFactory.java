@@ -25,7 +25,7 @@ public final class EntityFactory {
     public static RoleEntity getRole() {
         RoleEntity role = new RoleEntity();
         role.setId(getId());
-        role.setName("RoleName");
+        role.setName("ROLE_RoleName");
         return role;
     }
 

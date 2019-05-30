@@ -41,7 +41,6 @@ public class RunningStatsServiceImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(runningStatsService, "dateFormat", "yyyy-MM-dd");
     }
 
     @Test
@@ -138,6 +137,7 @@ public class RunningStatsServiceImplTest {
         stats2.setId(2L);
         List<Stats> statsCollection = Arrays.asList(stats1, stats2);
 
+        ReflectionTestUtils.setField(runningStatsService, "dateFormat", "yyyy-MM-dd");
         when(runningStatsRepository.findByUserId(user.getId())).thenReturn(statsEntityCollection);
         when(statsMapper.toDtoList(statsEntityCollection)).thenReturn(statsCollection);
 

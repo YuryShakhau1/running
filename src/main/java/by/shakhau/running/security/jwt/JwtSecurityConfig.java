@@ -15,8 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String ADMIN_END_POINT = "/running/stats/**";
-    private static final String USER_END_POINT = "/**";
+    private static final String ADMIN_END_POINT = "/user/all";
+    private static final String USER_END_POINT = "/running/stats/**";
+    private static final String PUBLIC_END_POINT = "/**";
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -41,7 +42,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(ADMIN_END_POINT).hasRole(RoleEntity.ADMIN_ROLE)
-                .antMatchers(USER_END_POINT).permitAll()
+                .antMatchers(USER_END_POINT).hasRole(RoleEntity.USER_ROLE)
+                .antMatchers(PUBLIC_END_POINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -16,8 +16,7 @@ public class DateUtil {
     public static int dayOfWeek(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        return dayOfWeek;
+        return c.get(Calendar.DAY_OF_WEEK);
     }
 
     public static int fromMonday(int dayOfWeak) {
