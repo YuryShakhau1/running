@@ -25,7 +25,7 @@ public class RoleServiceImplTest {
     private RoleServiceImpl roleService;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

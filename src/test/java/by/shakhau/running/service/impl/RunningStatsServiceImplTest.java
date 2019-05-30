@@ -39,7 +39,7 @@ public class RunningStatsServiceImplTest {
     private RunningStatsServiceImpl runningStatsService;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

@@ -24,7 +24,7 @@ public class StatsMapperTest {
     private StatsMapper statsMapper;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -27,13 +28,13 @@ public class UserMapperTest {
     private UserMapper userMapper;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void toEntity() {
-        List<RoleEntity> roleEntities = Arrays.asList(EntityFactory.getRole());
+        List<RoleEntity> roleEntities = Collections.singletonList(EntityFactory.getRole());
         User user = DtoFactory.getUser();
 
         when(roleMapper.toEntityList(user.getRoles())).thenReturn(roleEntities);
@@ -45,7 +46,7 @@ public class UserMapperTest {
 
     @Test
     public void toDto() {
-        List<Role> roles = Arrays.asList(DtoFactory.getRole());
+        List<Role> roles = Collections.singletonList(DtoFactory.getRole());
         UserEntity userEntity = EntityFactory.getUser();
 
         when(roleMapper.toDtoList(userEntity.getRoles())).thenReturn(roles);

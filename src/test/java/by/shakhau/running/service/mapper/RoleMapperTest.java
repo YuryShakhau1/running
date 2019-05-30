@@ -10,15 +10,13 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class RoleMapperTest {
 
     @InjectMocks
     private RoleMapper roleMapper;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

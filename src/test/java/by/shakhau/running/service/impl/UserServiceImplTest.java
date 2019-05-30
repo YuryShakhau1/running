@@ -42,7 +42,7 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Before
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
     }
 

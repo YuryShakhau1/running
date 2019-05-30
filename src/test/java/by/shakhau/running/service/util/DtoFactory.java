@@ -1,5 +1,6 @@
 package by.shakhau.running.service.util;
 
+import by.shakhau.running.security.UserAuthenticationDto;
 import by.shakhau.running.service.dto.AverageStats;
 import by.shakhau.running.service.dto.Role;
 import by.shakhau.running.service.dto.Stats;
@@ -57,5 +58,13 @@ public final class DtoFactory {
         averageStats.setAverageTime(stats.getTime());
         averageStats.setAverageSpeed(stats.getDistance() / stats.getTime());
         return averageStats;
+    }
+
+    public static UserAuthenticationDto getUserAuthenticationDto() {
+        User user = getUser();
+        UserAuthenticationDto dto = new UserAuthenticationDto();
+        dto.setUserName(user.getName());
+        dto.setPassword(user.getPassword());
+        return dto;
     }
 }
