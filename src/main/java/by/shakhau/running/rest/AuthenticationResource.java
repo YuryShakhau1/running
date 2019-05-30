@@ -5,6 +5,7 @@ import by.shakhau.running.security.jwt.JwtTokenProvider;
 import by.shakhau.running.service.UserService;
 import by.shakhau.running.service.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,7 +29,7 @@ public class AuthenticationResource {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> login(@RequestBody UserAuthenticationDto user) {
         try {
             String userName = user.getUserName();

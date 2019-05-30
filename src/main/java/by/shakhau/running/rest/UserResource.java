@@ -1,10 +1,12 @@
 package by.shakhau.running.rest;
 
+import by.shakhau.running.security.UserAuthenticationDto;
 import by.shakhau.running.service.UserService;
 import by.shakhau.running.service.dto.Stats;
 import by.shakhau.running.service.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class UserResource {
         return userService.findByName(userName) == null;
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user.getName(), user.getPassword());
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User createUser(@RequestBody UserAuthenticationDto user) {
+        return userService.createUser(user.getUserName(), user.getPassword());
     }
 }

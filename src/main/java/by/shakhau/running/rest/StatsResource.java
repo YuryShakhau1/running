@@ -43,7 +43,7 @@ public class StatsResource {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void update(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         runningStatsService.delete(id);
     }
 }

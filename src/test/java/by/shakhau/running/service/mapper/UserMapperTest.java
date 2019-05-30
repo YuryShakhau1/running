@@ -4,16 +4,15 @@ import by.shakhau.running.persistence.entity.RoleEntity;
 import by.shakhau.running.persistence.entity.UserEntity;
 import by.shakhau.running.service.dto.Role;
 import by.shakhau.running.service.dto.User;
-import by.shakhau.running.service.util.AssertHelper;
-import by.shakhau.running.service.util.DtoFactory;
-import by.shakhau.running.service.util.EntityFactory;
+import by.shakhau.running.util.AssertHelper;
+import by.shakhau.running.util.DtoFactory;
+import by.shakhau.running.util.EntityFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

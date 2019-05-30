@@ -5,7 +5,7 @@ import by.shakhau.running.security.jwt.JwtAuthenticationException;
 import by.shakhau.running.security.jwt.JwtTokenProvider;
 import by.shakhau.running.service.UserService;
 import by.shakhau.running.service.dto.User;
-import by.shakhau.running.service.util.DtoFactory;
+import by.shakhau.running.util.DtoFactory;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;

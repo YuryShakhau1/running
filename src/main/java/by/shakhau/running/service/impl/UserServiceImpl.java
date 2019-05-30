@@ -20,6 +20,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String ROLE_USER = "ROLE_" + RoleEntity.USER_ROLE;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        Role userRole = roleService.findByName(RoleEntity.USER_ROLE);
+        Role userRole = roleService.findByName(ROLE_USER);
         User user = new User();
         user.setName(name);
         user.setPassword(passwordEncoder.encode(password));
