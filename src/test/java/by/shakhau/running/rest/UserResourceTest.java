@@ -7,16 +7,13 @@ import by.shakhau.running.util.AssertHelper;
 import by.shakhau.running.util.DtoFactory;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public class UserResourceTest extends ResourceTest {
 
@@ -24,45 +21,38 @@ public class UserResourceTest extends ResourceTest {
     private UserService userService;
 
     @Test
-    public void testAvailableWhenUserIsAvailable() {
+    public void testAvailableWhenUserIsAvailable() throws Exception {
         User user = DtoFactory.getUser();
 
         when(userService.findByName(user.getName())).thenReturn(null);
 
-        Boolean available = getRestTemplate()
-                .getForObject(
-                        "http://localhost:" + getPort() + "/user/" + user.getName() + "/available",
-                        Boolean.class);
-
-        assertThat(available).isEqualTo(true);
+        getMockMvc()
+                .perform(get("/user/" + user.getName() + "/available"))
+                .andExpect(content().string("true"));
     }
 
     @Test
-    public void testAvailableWhenUserIsNotAvailable() {
+    public void testAvailableWhenUserIsNotAvailable() throws Exception {
         User user = DtoFactory.getUser();
 
         when(userService.findByName(user.getName())).thenReturn(user);
 
-        Boolean available = getRestTemplate()
-                .getForObject(
-                        "http://localhost:" + getPort() + "/user/" + user.getName() + "/available",
-                        Boolean.class);
-
-        assertThat(available).isEqualTo(false);
+        getMockMvc()
+                .perform(get("/user/" + user.getName() + "/available"))
+                .andExpect(content().string("false"));
     }
 
     @Test
-    public void testCreateUser() {
+    public void testCreateUser() throws Exception {
         UserAuthenticationDto userAuth = DtoFactory.getUserAuthenticationDto();
         User user = DtoFactory.getUser();
 
         when(userService.createUser(user.getName(), user.getPassword())).thenReturn(user);
 
-        User userCreated = getRestTemplate()
-                .postForObject(
-                        "http://localhost:" + getPort() + "/user",
-                        userAuth,
-                        User.class);
+        User userCreated = getMapper().readValue(getMockMvc()
+                .perform(post("/user")
+                        .contentType(MediaType.APPLICATION_JSON).content(getMapper().writeValueAsString(userAuth)))
+                .andReturn().getResponse().getContentAsString(), User.class);
 
         assertThat(userCreated.getPassword()).isNull();
         userCreated.setPassword(user.getPassword());

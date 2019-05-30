@@ -1,31 +1,32 @@
 package by.shakhau.running.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ResourceTest {
 
-    @LocalServerPort
-    private int port;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    private TestRestTemplate restTemplate;
-
-    public int getPort() {
-        return port;
-    }
-
-    public TestRestTemplate getRestTemplate() {
-        return restTemplate;
-    }
+    private MockMvc mockMvc;
 
     @Test
     public void test() {}
+
+    public MockMvc getMockMvc() {
+        return mockMvc;
+    }
+
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
 }
