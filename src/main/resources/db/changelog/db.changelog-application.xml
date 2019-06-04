@@ -36,6 +36,21 @@
             </column>
         </createTable>
 
+        <createTable tableName="refresh_token">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="token" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex indexName="refresh_token_token"
+                     tableName="refresh_token"
+                     unique="true">
+            <column name="token" type="varchar(255)"/>
+        </createIndex>
+
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="user_role"
                                  constraintName="fk_user_role_user_id"

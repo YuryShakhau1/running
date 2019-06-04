@@ -1,10 +1,7 @@
 package by.shakhau.running.util;
 
 import by.shakhau.running.security.UserAuthenticationDto;
-import by.shakhau.running.service.dto.AverageStats;
-import by.shakhau.running.service.dto.Role;
-import by.shakhau.running.service.dto.Stats;
-import by.shakhau.running.service.dto.User;
+import by.shakhau.running.service.dto.*;
 
 import java.util.Collections;
 import java.util.Date;
@@ -66,5 +63,9 @@ public final class DtoFactory {
         dto.setUserName(user.getName());
         dto.setPassword(user.getPassword());
         return dto;
+    }
+
+    public static Token getToken() {
+        return new Token("AccessToken", "RefreshToken");
     }
 }

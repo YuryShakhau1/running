@@ -1,6 +1,11 @@
 package by.shakhau.running.security.jwt;
 
+import by.shakhau.running.persistence.entity.RefreshTokenEntity;
+import by.shakhau.running.persistence.repository.RefreshTokenRepository;
+import by.shakhau.running.service.UserService;
 import by.shakhau.running.service.dto.Role;
+import by.shakhau.running.service.dto.Token;
+import by.shakhau.running.service.dto.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,34 +30,55 @@ public class JwtTokenProvider {
     @Value("${jwt.token.secret}")
     private String secret;
 
-    @Value("${jwt.token.expired}")
-    private Long validInMillis;
+    @Value("${jwt.access.token.expired}")
+    private Long validAccessInMillis;
+
+    @Value("${jwt.refresh.token.expired}")
+    private Long validRefreshInMillis;
 
     @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @PostConstruct
     private void init() {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String userName, List<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(userName);
-        claims.put("roles", getRoleNames(roles));
+    public Token createToken(String userName, List<Role> roles) {
+        String accessToken = createToken(userName, roles, validAccessInMillis);
+        String refreshToken = createToken(userName, roles, validRefreshInMillis);
+        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(refreshToken);
+        if (refreshTokenEntity == null) {
+            refreshTokenEntity = new RefreshTokenEntity();
+        }
+        refreshTokenEntity.setToken(refreshToken);
+        refreshTokenRepository.save(refreshTokenEntity);
+        return new Token(accessToken, refreshToken);
+    }
 
-        Date dateNow = new Date();
-        Date validity = new Date(dateNow.getTime() + validInMillis);
+    public Token refreshToken(String refreshToken) {
+        if (!validateToken(refreshToken)) {
+            throw new JwtAuthenticationException("Token " + refreshToken + " is not valid");
+        }
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(dateNow)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(refreshToken);
+        if (refreshTokenEntity == null || !refreshToken.equals((refreshTokenEntity.getToken()))) {
+            throw new JwtAuthenticationException("Token " + refreshToken + " is not valid");
+        }
+
+        User user = userService.findByName(getUserName(refreshToken));
+        String userName = user.getName();
+        List<Role> roles = user.getRoles();
+        String createdAccessToken = createToken(userName, roles, validAccessInMillis);
+        String createdRefreshToken = createToken(userName, roles, validRefreshInMillis);
+        return new Token(createdAccessToken, createdRefreshToken);
     }
 
     public Authentication authentication(String token) {
@@ -87,6 +113,22 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("Token " + token + " is not valid", e);
         }
+    }
+
+    private String createToken(String userName, List<Role> roles, long validTime) {
+        Claims claims = Jwts.claims().setSubject(userName);
+        claims.put("roles", getRoleNames(roles));
+
+        Date dateNow = new Date();
+        Date validity = new Date(dateNow.getTime() + validTime);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setId(userName)
+                .setIssuedAt(dateNow)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
     }
 
     private List<String> getRoleNames(List<Role> roles) {
