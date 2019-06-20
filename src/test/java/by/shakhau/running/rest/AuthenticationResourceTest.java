@@ -78,7 +78,7 @@ public class AuthenticationResourceTest extends ResourceTest {
         UserAuthenticationDto dto = DtoFactory.getUserAuthenticationDto();
         Token token = DtoFactory.getToken();
 
-        when(jwtTokenProvider.refreshToken(token.getRefreshToken())).thenReturn(token);
+        when(jwtTokenProvider.createRefreshToken(token.getRefreshToken())).thenReturn(token);
         Token tokenCreated = getMapper().readValue(getMockMvc()
                 .perform(post("/auth/refresh-token")
                         .contentType(MediaType.APPLICATION_JSON).content(token.getRefreshToken()))

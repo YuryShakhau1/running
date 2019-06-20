@@ -40,6 +40,9 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="expire_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
             <column name="token" type="varchar(255)">
                 <constraints nullable="false" />
             </column>

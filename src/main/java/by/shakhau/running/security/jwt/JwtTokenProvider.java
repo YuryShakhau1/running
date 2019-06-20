@@ -2,9 +2,11 @@ package by.shakhau.running.security.jwt;
 
 import by.shakhau.running.persistence.entity.RefreshTokenEntity;
 import by.shakhau.running.persistence.repository.RefreshTokenRepository;
+import by.shakhau.running.service.RefreshTokenService;
 import by.shakhau.running.service.UserService;
 import by.shakhau.running.service.dto.Role;
 import by.shakhau.running.service.dto.Token;
+import by.shakhau.running.service.dto.TokenWithDateExpire;
 import by.shakhau.running.service.dto.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class JwtTokenProvider {
     private UserService userService;
 
     @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    private RefreshTokenService refreshTokenService;
 
     @PostConstruct
     private void init() {
@@ -52,23 +54,18 @@ public class JwtTokenProvider {
     }
 
     public Token createToken(String userName, List<Role> roles) {
-        String accessToken = createToken(userName, roles, validAccessInMillis);
-        String refreshToken = createToken(userName, roles, validRefreshInMillis);
-        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(refreshToken);
-        if (refreshTokenEntity == null) {
-            refreshTokenEntity = new RefreshTokenEntity();
-        }
-        refreshTokenEntity.setToken(refreshToken);
-        refreshTokenRepository.save(refreshTokenEntity);
-        return new Token(accessToken, refreshToken);
+        TokenWithDateExpire accessToken = createToken(userName, roles, validAccessInMillis);
+        TokenWithDateExpire refreshToken = createToken(userName, roles, validRefreshInMillis);
+        updateToken(refreshToken);
+        return new Token(accessToken.getToken(), refreshToken.getToken());
     }
 
-    public Token refreshToken(String refreshToken) {
+    public Token createRefreshToken(String refreshToken) {
         if (!validateToken(refreshToken)) {
             throw new JwtAuthenticationException("Token " + refreshToken + " is not valid");
         }
 
-        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(refreshToken);
+        RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(refreshToken);
         if (refreshTokenEntity == null || !refreshToken.equals((refreshTokenEntity.getToken()))) {
             throw new JwtAuthenticationException("Token " + refreshToken + " is not valid");
         }
@@ -76,9 +73,10 @@ public class JwtTokenProvider {
         User user = userService.findByName(getUserName(refreshToken));
         String userName = user.getName();
         List<Role> roles = user.getRoles();
-        String createdAccessToken = createToken(userName, roles, validAccessInMillis);
-        String createdRefreshToken = createToken(userName, roles, validRefreshInMillis);
-        return new Token(createdAccessToken, createdRefreshToken);
+        TokenWithDateExpire createdAccessToken = createToken(userName, roles, validAccessInMillis);
+        TokenWithDateExpire createdRefreshToken = createToken(userName, roles, validRefreshInMillis);
+        updateToken(createdRefreshToken);
+        return new Token(createdAccessToken.getToken(), createdRefreshToken.getToken());
     }
 
     public Authentication authentication(String token) {
@@ -115,20 +113,31 @@ public class JwtTokenProvider {
         }
     }
 
-    private String createToken(String userName, List<Role> roles, long validTime) {
+    private void updateToken(TokenWithDateExpire refreshToken) {
+        RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(refreshToken.getToken());
+        if (refreshTokenEntity == null) {
+            refreshTokenEntity = new RefreshTokenEntity();
+        }
+        refreshTokenEntity.setExpireDate(refreshToken.getExpireDate());
+        refreshTokenEntity.setToken(refreshToken.getToken());
+        refreshTokenService.save(refreshTokenEntity);
+    }
+
+    private TokenWithDateExpire createToken(String userName, List<Role> roles, long validTime) {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put("roles", getRoleNames(roles));
 
         Date dateNow = new Date();
         Date validity = new Date(dateNow.getTime() + validTime);
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setId(userName)
                 .setIssuedAt(dateNow)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+        return new TokenWithDateExpire(validity, token);
     }
 
     private List<String> getRoleNames(List<Role> roles) {

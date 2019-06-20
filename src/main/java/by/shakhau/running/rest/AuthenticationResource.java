@@ -1,7 +1,5 @@
 package by.shakhau.running.rest;
 
-import by.shakhau.running.persistence.entity.RefreshTokenEntity;
-import by.shakhau.running.persistence.repository.RefreshTokenRepository;
 import by.shakhau.running.security.UserAuthenticationDto;
 import by.shakhau.running.security.jwt.JwtTokenProvider;
 import by.shakhau.running.service.UserService;
@@ -9,7 +7,6 @@ import by.shakhau.running.service.dto.Token;
 import by.shakhau.running.service.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,7 +50,7 @@ public class AuthenticationResource {
     @PostMapping(value = "/refresh-token")
     public Token refreshToken(@RequestBody String refreshToken) {
         try {
-            return jwtTokenProvider.refreshToken(refreshToken);
+            return jwtTokenProvider.createRefreshToken(refreshToken);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid user name or password", e);
         }
